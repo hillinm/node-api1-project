@@ -3,17 +3,29 @@ const User = require('./user-model.js');
 const express = require(`express`);
 const server = express();
 
-server.post('/api/users', async (req, res) => {
-    const user = req.body;
+const cors = require("cors");
+server.use(cors());
 
-    if ( !user.name || !user.bio ) {
-        res.status(400).json({errorMessage: "Please provide name and bio for the user."})
-    } else {
-        try {
-            const newUser = User.create(user);
-            res.status(201).json(newUser);
+server.use(express.json());
+
+server.get('/', (req, res) => {
+    res.send("hey there??");
+});
+
+server.post('/api/users', async (req, res) => {
+    console.log('triggered')
+    const newUser = req.body;
+
+    console.log(newUser)
+
+    if (!newUser.name || !newUser.bio) {
+         res.status(400).json({errorMessage: "Please provide name and bio for the user."})
+     } else {
+         try {
+             const newlyCreatedUser = await User.create(newUser);
+            res.status(200).json(newlyCreatedUser);
         } catch (err) {
-            res.status(500).json({errorMessage: "There was an error while saving the user to the database"});
+             res.status(500).json({errorMessage: "There was an error while saving the user to the database"});
         }
     }
 })
@@ -22,7 +34,7 @@ server.get('/api/users', async (req, res) => {
 
     try {
         const Users = await User.findAll();
-        res.status(200).json(users);
+        res.status(200).json(Users);
     } catch (err) {
         res.status(500).json({errorMessage: "The users information could not be retrieved."})
     }

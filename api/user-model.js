@@ -1,7 +1,7 @@
 const shortid = require(`shortid`)
 
 let users = [
-    {id: shortid.generate(), name: `Jane Doe`, bio: `Not Tarzan's Wife, another Jan`},
+    {id: shortid.generate(), name: `Jane Doe`, bio: `Not Tarzan's Wife, another Jane`},
 ]
 
 module.exports = {
